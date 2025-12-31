@@ -43,7 +43,7 @@ export default function CityMarker({ feature }: { feature: GeoJSON.Feature<GeoJS
             <div>{timeParts.map((p) => p.value)}</div>
           )}
           {!fireworks && showCountdown && (
-            <div className="text-lg">{seconds}</div>
+            <div className="text-xl">{seconds}</div>
           )}
           <div
             style={{
