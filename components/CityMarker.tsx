@@ -7,15 +7,15 @@ import {
 import Fireworks from "./Fireworks";
 import { cn } from "@/utils/cn";
 
-export default function CityMarker({ feature }: { feature: GeoJSON.Feature<GeoJSON.Geometry, { city: string; timezone: string }> }) {
-  const { city, timezone } = feature.properties;
+export default function CityMarker({ feature }: { feature: GeoJSON.Feature<GeoJSON.Geometry, { city: string; timezone: string; country: string }> }) {
+  const { city, timezone, country } = feature.properties;
 
   useClockTick();
 
   const timeParts = getCityTime(timezone);
   const fireworks = isFireworksTime(timezone);
   const { minutes, seconds } = timeTillMidnight(timezone);
-  const upcomingMidnight = minutes >= 0 && minutes < 15;
+  const upcomingMidnight = minutes >= 0 && minutes < 30;
   const showCountdown = minutes < 1;
 
   return (
@@ -31,18 +31,19 @@ export default function CityMarker({ feature }: { feature: GeoJSON.Feature<GeoJS
       {(fireworks || upcomingMidnight) && (
         <div
           className={cn(
-            "absolute bottom-2 left-0 right-0 flex flex-col items-center text-xs",
+            "absolute bottom-0 left-0 right-0 flex flex-col items-center text-xs",
             fireworks || showCountdown || upcomingMidnight
               ? "text-white"
               : "text-white/20"
           )}
         >
+          <div className="text-[8px]">{country}</div>
           <div>{city}</div>
           {!fireworks && !showCountdown && (
             <div>{timeParts.map((p) => p.value)}</div>
           )}
           {!fireworks && showCountdown && (
-            <div className="text-xl">{seconds}</div>
+            <div className="text-lg">{seconds}</div>
           )}
           <div
             style={{
